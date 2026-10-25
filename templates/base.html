@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CivicFix - Make Your City Better{% endblock %}</title>
+
+    <meta name="description"
+          content="CivicFix helps citizens report civic problems, upload photos, share locations, and track issue resolution.">
+
+    <meta name="theme-color" content="#0b1220">
+    <meta name="robots" content="index, follow">
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Authentication Stylesheet -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/auth.css') }}">
+
+    <!-- Dashboard Stylesheet -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <!-- Report Issue Stylesheet -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/report.css') }}">
+
+    <!-- Allow individual pages to add extra head content -->
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <nav class="navbar nav-container container"
+             aria-label="Main navigation">
+
+            <!-- Brand -->
+            <a class="brand logo"
+               href="{{ url_for('home') }}"
+               aria-label="CivicFix Home">
+
+                <span class="brand-icon">C</span>
+                <span>CivicFix</span>
+            </a>
+
+            <!-- Mobile Menu Button -->
+            <button
+                class="menu-toggle nav-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Toggle navigation"
+                aria-controls="navLinks"
+                aria-expanded="false">
+
+                <span aria-hidden="true">&#9776;</span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="nav-links" id="navLinks">
+
+                <a href="{{ url_for('home') }}">Home</a>
+
+                <a href="{{ url_for('home') }}#how-it-works">
+                    How It Works
+                </a>
+
+                {% if session.get('user_id') %}
+
+                    <a href="{{ url_for('issues.my_issues_page') }}">
+                    My Reports
+                        </a>
+
+                    {% if session.get('role') == 'admin' %}
+                        <a href="{{ url_for('admin.dashboard') }}">
+                            Admin Dashboard
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ url_for('home') }}#report">
+                        Report an Issue
+                    </a>
+
+                    <form
+                        class="nav-logout-form"
+                        action="{{ url_for('auth.logout') }}"
+                        method="POST">
+
+                        <button
+                            type="submit"
+                            class="btn btn-secondary nav-login">
+                            Logout
+                        </button>
+                    </form>
+
+                {% else %}
+
+                    <a href="{{ url_for('auth.login_page') }}">
+                        Login
+                    </a>
+
+                    <a
+                        class="btn btn-primary nav-login"
+                        href="{{ url_for('auth.register_page') }}">
+                        Get Started
+                    </a>
+
+                {% endif %}
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+                <div class="container flash-container"
+                     aria-live="polite">
+
+                    {% for category, message in messages %}
+
+                        <div
+                            class="flash flash-{{ category }} flash-message"
+                            role="status">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+        {% endwith %}
+
+        <!-- Individual Page Content -->
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-content">
+
+            <a class="brand footer-brand"
+               href="{{ url_for('home') }}">
+
+                <span class="brand-icon">C</span>
+                <span>CivicFix</span>
+            </a>
+
+            <p>
+                Small actions. Better neighbourhoods.
+                Stronger communities.
+            </p>
+
+            <div class="footer-links">
+
+                <a href="{{ url_for('home') }}">Home</a>
+
+                <a href="{{ url_for('home') }}#how-it-works">
+                    How It Works
+                </a>
+
+                <a href="{{ url_for('home') }}#report">
+                    Report an Issue
+                </a>
+
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('issues.my_issues') }}">
+                        My Reports
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('auth.login_page') }}">
+                        Login
+                    </a>
+                {% endif %}
+
+            </div>
+
+            <p class="copyright">
+                &copy; {{ current_year|default(2026) }} CivicFix.
+                Built for better communities.
+            </p>
+
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script
+        src="{{ url_for('static', filename='js/script.js') }}"
+        defer></script>
+
+    <!-- Page-specific JavaScript -->
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

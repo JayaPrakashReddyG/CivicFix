@@ -1,0 +1,157 @@
+
+{% extends "base.html" %}
+
+{% block title %}Login | CivicFix{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+
+        <a href="{{ url_for('home') }}" class="auth-brand">
+            <span class="brand-icon">C</span>
+            <span>CivicFix</span>
+        </a>
+
+        <div class="auth-header">
+            <span class="eyebrow">WELCOME TO CIVICFIX</span>
+            <h1>Login to your account</h1>
+            <p class="auth-description">
+                Sign in to report civic issues and track your submissions.
+                New to CivicFix? Create an account to get started.
+            </p>
+        </div>
+
+        <div id="authMessage"
+             class="auth-message"
+             role="status"
+             aria-live="polite"></div>
+
+        <form id="loginForm" class="auth-form">
+
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    maxlength="254"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary submit-btn">
+                Login <span aria-hidden="true">→</span>
+            </button>
+
+        </form>
+
+        <p class="auth-footer">
+            Don't have an account?
+            <a href="{{ url_for('auth.register_page') }}">
+                Create an account
+            </a>
+        </p>
+
+        <p class="auth-footer">
+            <a href="{{ url_for('home') }}">← Back to Home</a>
+        </p>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(() => {
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("authMessage");
+    const button = form.querySelector('button[type="submit"]');
+
+    function showMessage(text, type) {
+        message.textContent = text;
+        message.className = "auth-message visible " + type;
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!form.reportValidity()) return;
+
+        const originalButtonHTML =
+            'Login <span aria-hidden="true">→</span>';
+
+        button.disabled = true;
+        button.textContent = "Signing in...";
+        message.className = "auth-message";
+        message.textContent = "";
+
+        try {
+            const response = await fetch(
+                "{{ url_for('auth.login') }}",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        email: form.elements.email.value.trim(),
+                        password: form.elements.password.value
+                    })
+                }
+            );
+
+            let result;
+
+            try {
+                result = await response.json();
+            } catch {
+                throw new Error(
+                    "Unexpected server response. Please try again."
+                );
+            }
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Invalid email or password."
+                );
+            }
+
+            showMessage(
+                "Login successful! Redirecting...",
+                "success"
+            );
+
+            window.location.href = "{{ url_for('home') }}";
+
+        } catch (error) {
+            showMessage(
+                error.message || "Unable to connect to the server.",
+                "error"
+            );
+        } finally {
+            button.disabled = false;
+            button.innerHTML = originalButtonHTML;
+        }
+    });
+})();
+</script>
+{% endblock %}

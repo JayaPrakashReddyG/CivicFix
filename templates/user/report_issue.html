@@ -1,0 +1,191 @@
+
+{% extends "base.html" %}
+
+{% block title %}Report an Issue | CivicFix{% endblock %}
+
+{% block content %}
+<section class="report-section section-padding">
+    <div class="container report-layout">
+
+        <div class="report-intro">
+            <span class="eyebrow">MAKE A DIFFERENCE</span>
+
+            <h1>Report a Civic Issue</h1>
+
+            <p>
+                Help make your neighbourhood safer and cleaner.
+                Report a problem so it can be reviewed and addressed.
+            </p>
+
+            <div class="report-info-card">
+                <h3>Before submitting</h3>
+                <p>
+                    Give the issue a clear title, describe the problem,
+                    and include a nearby landmark.
+                </p>
+                <p>
+                    Adding the correct location and a photo can help
+                    identify the issue more easily.
+                </p>
+            </div>
+        </div>
+
+        <div class="report-form-card">
+            <h2>Issue Details</h2>
+
+            <p class="form-description">
+                Fields marked * are required.
+            </p>
+
+            <form
+                id="issueForm"
+                action="{{ url_for('issues.report_issue') }}"
+                method="POST"
+                enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="title">Issue Title *</label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        maxlength="150"
+                        placeholder="e.g. Large pothole near the bus stop"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Issue Category *</label>
+                    <select id="category" name="category" required>
+                        <option value="">Choose a category</option>
+                        <option value="Pothole">Road &amp; Potholes</option>
+                        <option value="Garbage">Garbage &amp; Waste</option>
+                        <option value="Water Leakage">Water Problems</option>
+                        <option value="Broken Streetlight">Streetlights</option>
+                        <option value="Drainage">Drainage</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="5"
+                        maxlength="2000"
+                        placeholder="Describe the issue, its severity and the exact area..."
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address / Landmark</label>
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        maxlength="300"
+                        placeholder="Street, area or nearby landmark">
+                </div>
+
+                <div class="form-group">
+                    <label>Issue Location</label>
+                    <p class="report-help">
+                        Use your current location to fill in coordinates.
+                        Your browser may ask for location permission.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="getLocationBtn"
+                        class="btn btn-secondary">
+                        Use My Current Location
+                    </button>
+
+                    <p
+                        id="locationMessage"
+                        class="location-message"
+                        role="status"
+                        aria-live="polite"></p>
+                </div>
+
+                <div class="location-fields">
+                    <div class="form-group">
+                        <label for="latitude">Latitude</label>
+                        <input
+                            type="number"
+                            step="any"
+                            min="-90"
+                            max="90"
+                            id="latitude"
+                            name="latitude"
+                            placeholder="Optional">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input
+                            type="number"
+                            step="any"
+                            min="-180"
+                            max="180"
+                            id="longitude"
+                            name="longitude"
+                            placeholder="Optional">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Upload Photo (maximum 5 MB)</label>
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+
+                    <p class="report-help">
+                        Supported formats: JPG, JPEG, PNG and WEBP.
+                        Maximum file size: 5 MB.
+                    </p>
+
+                    <div id="uploadPreview" class="upload-preview" hidden>
+                        <p class="report-help">Selected photo preview</p>
+                        <img
+                            id="imagePreview"
+                            alt="Preview of selected civic issue photo">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button
+                        type="submit"
+                        id="submitReportBtn"
+                        class="btn btn-primary submit-btn">
+                        Submit Report →
+                    </button>
+                </div>
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                    role="status"
+                    aria-live="polite"
+                    hidden></div>
+
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    <script
+        src="{{ url_for('static', filename='js/location.js') }}"
+        defer>
+    </script>
+
+    <script
+        src="{{ url_for('static', filename='js/report.js') }}"
+        defer>
+    </script>
+{% endblock %}

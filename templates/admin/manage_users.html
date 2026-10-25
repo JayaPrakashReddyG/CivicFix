@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+
+{% block title %}Manage Users | CivicFix{% endblock %}
+
+{% block content %}
+<section class="page-container">
+    <div class="page-header">
+        <p class="eyebrow">ADMIN PANEL</p>
+        <h1>Manage Users</h1>
+        <p>View registered citizens and administrators.</p>
+    </div>
+
+    {% if users %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>#{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.created_at or '—' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No registered users found.</p>
+    {% endif %}
+
+    <a class="btn btn-secondary"
+       href="{{ url_for('admin.dashboard_page') }}">Back to Dashboard</a>
+</section>
+{% endblock %}

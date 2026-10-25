@@ -1,0 +1,63 @@
+
+{% extends "base.html" %}
+
+{% block title %}My Profile | CivicFix{% endblock %}
+
+{% block content %}
+<section class="dashboard-section section-padding">
+    <div class="container">
+
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">ACCOUNT SETTINGS</span>
+                <h1>My Profile</h1>
+                <p>View your CivicFix account information.</p>
+            </div>
+
+            <a href="{{ url_for('issues.my_issues') }}"
+               class="btn btn-secondary">
+                My Reports
+            </a>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-avatar" aria-hidden="true">
+                {{ user.name[0]|upper if user.name else 'U' }}
+            </div>
+
+            <h2>{{ user.name }}</h2>
+            <p class="profile-role">
+                {{ user.role|capitalize }}
+            </p>
+
+            <div class="profile-info">
+                <div class="detail-item">
+                    <span>Full Name</span>
+                    <strong>{{ user.name }}</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Email Address</span>
+                    <strong>{{ user.email }}</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Account Role</span>
+                    <strong>{{ user.role|capitalize }}</strong>
+                </div>
+
+                <div class="detail-item">
+                    <span>Member Since</span>
+                    <strong>{{ user.created_at or 'Not available' }}</strong>
+                </div>
+            </div>
+
+            <p class="form-footnote">
+                Profile editing is not available yet. Your account information
+                is displayed here for reference.
+            </p>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

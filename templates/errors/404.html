@@ -1,0 +1,37 @@
+
+{% extends "base.html" %}
+
+{% block title %}404 - Page Not Found | CivicFix{% endblock %}
+
+{% block content %}
+<section class="error-page">
+    <div class="error-card">
+        <p class="eyebrow">PAGE NOT FOUND</p>
+        <h1>404</h1>
+        <h2>Oops! This page is missing.</h2>
+
+        <p>
+            The page you're looking for doesn't exist,
+            may have moved, or the URL may be incorrect.
+        </p>
+
+        <div class="error-actions">
+            <a class="btn btn-primary" href="{{ url_for('home') }}">
+                Go to Home
+            </a>
+
+            {% if session.get('user_id') %}
+                <a class="btn btn-secondary"
+                   href="{{ url_for('issues.my_issues') }}">
+                    My Reports
+                </a>
+            {% else %}
+                <a class="btn btn-secondary"
+                   href="{{ url_for('auth.login_page') }}">
+                    Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

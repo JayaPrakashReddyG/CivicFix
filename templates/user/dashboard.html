@@ -1,0 +1,108 @@
+﻿
+{% extends "base.html" %}
+
+{% block title %}My Dashboard | CivicFix{% endblock %}
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="dashboard-section section-padding">
+    <div class="container">
+
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">CITIZEN DASHBOARD</span>
+                <h1>Welcome, {{ user.name|default('Citizen') }}!</h1>
+                <p>Track your civic reports and help improve your community.</p>
+            </div>
+
+            <a href="{{ url_for('home') + '#report' }}"
+               class="btn btn-primary">
+                + Report an Issue
+            </a>
+        </div>
+
+        <div class="stats-grid">
+            <article class="stat-card">
+                <span class="stat-label">Total Reports</span>
+                <h2>{{ stats.total|default(0) }}</h2>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Pending</span>
+                <h2>{{ stats.pending|default(0) }}</h2>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">In Progress</span>
+                <h2>{{ stats.in_progress|default(0) }}</h2>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">Resolved</span>
+                <h2>{{ stats.resolved|default(0) }}</h2>
+            </article>
+        </div>
+
+        <div class="dashboard-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Recent Reports</h2>
+                    <p>Your latest submitted civic issues.</p>
+                </div>
+
+                <a href="{{ url_for('issues.my_issues') }}">View All</a>
+            </div>
+
+            {% if issues %}
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Issue</th>
+                                <th>Category</th>
+                                <th>Date Reported</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for issue in issues %}
+                                <tr>
+                                    <td>{{ issue.title }}</td>
+                                    <td>{{ issue.category }}</td>
+                                    <td>{{ issue.created_at }}</td>
+                                    <td>
+                                        <span class="status-badge status-{{ issue.status|lower|replace(' ', '-') }}">
+                                            {{ issue.status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('issues.issue_details_page', issue_id=issue.id) }}">
+                                            View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>No reports yet</h3>
+                    <p>Report your first civic issue to get started.</p>
+                    <a href="{{ url_for('home') + '#report' }}"
+                       class="btn btn-primary">
+                        Report Your First Issue
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+

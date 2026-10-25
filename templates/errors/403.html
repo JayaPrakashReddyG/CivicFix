@@ -1,0 +1,37 @@
+
+{% extends "base.html" %}
+
+{% block title %}403 - Access Denied | CivicFix{% endblock %}
+
+{% block content %}
+<section class="error-page">
+    <div class="error-card">
+        <p class="eyebrow">ACCESS DENIED</p>
+        <h1>403</h1>
+        <h2>You don't have permission.</h2>
+
+        <p>
+            Sorry! You don't have permission to access this page.
+            This area may be restricted to CivicFix administrators.
+        </p>
+
+        <div class="error-actions">
+            <a class="btn btn-primary" href="{{ url_for('home') }}">
+                Back to Home
+            </a>
+
+            {% if session.get('user_id') %}
+                <a class="btn btn-secondary"
+                   href="{{ url_for('auth.logout') }}">
+                    Logout
+                </a>
+            {% else %}
+                <a class="btn btn-secondary"
+                   href="{{ url_for('auth.login_page') }}">
+                    Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error | CivicFix{% endblock %}
+
+{% block content %}
+<section class="error-page">
+    <div class="error-card">
+        <p class="eyebrow">SERVER ERROR</p>
+        <h1>500</h1>
+        <h2>Something went wrong.</h2>
+
+        <p>
+            CivicFix encountered an unexpected problem while processing
+            your request. Please try again in a moment.
+        </p>
+
+        <div class="error-actions">
+            <a class="btn btn-primary"
+               href="{{ url_for('home') }}">
+                Return Home
+            </a>
+
+            <button class="btn btn-secondary"
+                    type="button"
+                    onclick="window.location.reload()">
+                Try Again
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}

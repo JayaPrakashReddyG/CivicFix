@@ -1,0 +1,321 @@
+﻿
+{% extends "base.html" %}
+
+{% block title %}My Reports | CivicFix{% endblock %}
+
+{% block head %}
+<style>
+    .my-reports-section {
+        padding: 42px 0 70px;
+        min-height: 65vh;
+    }
+
+    .my-reports-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 22px;
+        margin-bottom: 28px;
+    }
+
+    .my-reports-eyebrow {
+        color: #638b37;
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: 1.6px;
+    }
+
+    .my-reports-header h1 {
+        margin: 8px 0;
+        color: #18251f;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+    }
+
+    .my-reports-header p {
+        margin: 0;
+        color: #728077;
+        line-height: 1.7;
+    }
+
+    .my-reports-count {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 8px 13px;
+        border-radius: 999px;
+        background: #eff8e6;
+        color: #416d23;
+        font-size: .88rem;
+        font-weight: 800;
+    }
+
+    .my-reports-panel {
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #e4eae2;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(20, 37, 30, .06);
+    }
+
+    .my-reports-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .my-reports-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .my-reports-table th {
+        padding: 17px 20px;
+        background: #f5f8f3;
+        color: #68776c;
+        font-size: .76rem;
+        font-weight: 800;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .my-reports-table td {
+        padding: 19px 20px;
+        border-top: 1px solid #edf0eb;
+        color: #425047;
+        font-size: .9rem;
+        vertical-align: middle;
+    }
+
+    .my-reports-table tbody tr {
+        transition: background .2s ease;
+    }
+
+    .my-reports-table tbody tr:hover {
+        background: #fbfdf9;
+    }
+
+    .my-report-title {
+        display: block;
+        min-width: 120px;
+        color: #1d2b22;
+        font-weight: 800;
+    }
+
+    .my-report-id {
+        display: block;
+        margin-top: 5px;
+        color: #849087;
+        font-size: .77rem;
+    }
+
+    .my-report-status {
+        display: inline-flex;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: #fff4d8;
+        color: #946200;
+        font-size: .78rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .my-report-status.status-resolved {
+        background: #e4f8e9;
+        color: #19743b;
+    }
+
+    .my-report-status.status-in-progress {
+        background: #e7f1ff;
+        color: #235da8;
+    }
+
+    .my-report-status.status-rejected {
+        background: #ffebeb;
+        color: #b42323;
+    }
+
+    .my-report-view {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 9px 13px;
+        border: 1px solid #dce8d3;
+        border-radius: 10px;
+        background: #f2f9eb;
+        color: #426f22;
+        font-size: .85rem;
+        font-weight: 800;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: all .2s ease;
+    }
+
+    .my-report-view:hover {
+        background: #b7f36b;
+        border-color: #b7f36b;
+        color: #18251f;
+        transform: translateY(-1px);
+    }
+
+    .my-reports-empty {
+        padding: 55px 22px;
+        text-align: center;
+    }
+
+    .my-reports-empty-icon {
+        display: grid;
+        place-items: center;
+        width: 66px;
+        height: 66px;
+        margin: 0 auto 18px;
+        border-radius: 20px;
+        background: #eff8e6;
+        color: #527d2c;
+        font-size: 1.8rem;
+    }
+
+    .my-reports-empty h2 {
+        margin: 0 0 10px;
+        color: #203128;
+    }
+
+    .my-reports-empty p {
+        margin: 0 0 22px;
+        color: #728077;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 640px) {
+        .my-reports-section {
+            padding: 25px 0 45px;
+        }
+
+        .my-reports-header {
+            align-items: flex-start;
+        }
+
+        .my-reports-header > .btn {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .my-reports-table th,
+        .my-reports-table td {
+            padding: 14px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="my-reports-section">
+    <div class="container">
+
+        <header class="my-reports-header">
+            <div>
+                <span class="my-reports-eyebrow">
+                    YOUR CONTRIBUTION
+                </span>
+
+                <h1>My Reports</h1>
+
+                <p>
+                    View your submitted civic issues and track their progress.
+                </p>
+
+                <span class="my-reports-count">
+                    {{ count|default(issues|length) }}
+                    report{% if issues|length != 1 %}s{% endif %} submitted
+                </span>
+            </div>
+
+            <a href="{{ url_for('home') }}#report"
+               class="btn btn-primary">
+                + New Report
+            </a>
+        </header>
+
+        <div class="my-reports-panel">
+
+            {% if issues %}
+
+                <div class="my-reports-table-wrap">
+                    <table class="my-reports-table">
+                        <thead>
+                            <tr>
+                                <th>Issue</th>
+                                <th>Category</th>
+                                <th>Reported On</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for issue in issues %}
+                                <tr>
+                                    <td>
+                                        <span class="my-report-title">
+                                            {{ issue.title }}
+                                        </span>
+                                        <span class="my-report-id">
+                                            Report #{{ issue.id }}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ issue.category }}</td>
+
+                                    <td>
+                                        {{ issue.created_at or 'Not available' }}
+                                    </td>
+
+                                    <td>
+                                        <span class="my-report-status status-{{ issue.status|lower|replace(' ', '-') }}">
+                                            {{ issue.status }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <a
+                                            class="my-report-view"
+                                            href="{{ url_for('issues.issue_details_page', issue_id=issue.id) }}">
+                                            View Details &rarr;
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            {% else %}
+
+                <div class="my-reports-empty">
+                    <div class="my-reports-empty-icon" aria-hidden="true">
+                        +
+                    </div>
+
+                    <h2>No reports yet</h2>
+
+                    <p>
+                        You haven't submitted any civic issues yet.
+                        Report a local problem to get started.
+                    </p>
+
+                    <a href="{{ url_for('home') }}#report"
+                       class="btn btn-primary">
+                        Report an Issue
+                    </a>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+{% endblock %}

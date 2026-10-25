@@ -1,0 +1,661 @@
+/* =========================================================
+   CIVICFIX — REPORT ISSUE PAGE (premium)
+   Palette: #142D24 Deep · #315C46 Forest · #D6B779 Gold · #F6F3EA Ivory
+   CSS only. All class names, ids and states are the same as before,
+   so your JS (location button, preview, success / error) keeps working.
+   Needs the :root variables from style.css.
+   ========================================================= */
+ 
+.report-section {
+    position: relative;
+    overflow: hidden;
+    padding: 76px 0 96px;
+    background:
+        radial-gradient(ellipse at 8% 6%, rgba(214, 183, 121, 0.22), transparent 38%),
+        radial-gradient(ellipse at 95% 90%, rgba(49, 92, 70, 0.10), transparent 40%),
+        linear-gradient(180deg, #F6F3EA 0%, #EEEADB 100%);
+}
+ 
+.report-section::before {
+    content: "";
+    position: absolute;
+    top: 100px;
+    left: -130px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(214, 183, 121, 0.14);
+    filter: blur(40px);
+    pointer-events: none;
+}
+ 
+.report-section .container {
+    width: min(1180px, calc(100% - 48px));
+    margin-inline: auto;
+}
+ 
+.report-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+    align-items: start;
+    gap: 64px;
+}
+ 
+/* -------------------------
+   INTRODUCTION / LEFT SIDE
+   ------------------------- */
+ 
+.report-intro {
+    position: sticky;
+    top: 105px;
+    padding: 34px 0;
+}
+ 
+.report-intro .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #315C46;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+ 
+.report-intro .eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 3px;
+    border-radius: 10px;
+    background: #D6B779;
+}
+ 
+.report-intro h1 {
+    max-width: 540px;
+    margin: 0 0 22px;
+    color: #142D24;
+    font-family: var(--cf-font-display, "Fraunces", Georgia, serif);
+    font-size: clamp(38px, 4.2vw, 58px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+ 
+.report-intro > p {
+    max-width: 470px;
+    margin: 0;
+    color: #5E6F66;
+    font-size: 17px;
+    line-height: 1.85;
+}
+ 
+.report-info-card {
+    position: relative;
+    margin-top: 38px;
+    padding: 27px 28px 27px 32px;
+    overflow: hidden;
+    border: 1px solid rgba(20, 45, 36, 0.12);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 14px 34px rgba(20, 45, 36, 0.07);
+}
+ 
+.report-info-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, #D6B779, #B8975A);
+}
+ 
+.report-info-card h3 {
+    margin: 0 0 12px;
+    color: #142D24;
+    font-family: var(--cf-font-display, "Fraunces", Georgia, serif);
+    font-size: 19px;
+    font-weight: 600;
+}
+ 
+.report-info-card p {
+    margin: 10px 0 0;
+    color: #5E6F66;
+    font-size: 14px;
+    line-height: 1.8;
+}
+ 
+/* -------------------------
+   FORM CARD / RIGHT SIDE
+   ------------------------- */
+ 
+.report-form-card {
+    min-width: 0;
+    padding: 38px;
+    border: 1px solid rgba(20, 45, 36, 0.10);
+    border-top: 4px solid #D6B779;
+    border-radius: 26px;
+    background: #ffffff;
+    box-shadow:
+        0 28px 70px rgba(20, 45, 36, 0.12),
+        0 3px 10px rgba(20, 45, 36, 0.04);
+}
+ 
+.report-form-card h2 {
+    margin: 0 0 8px;
+    color: #142D24;
+    font-family: var(--cf-font-display, "Fraunces", Georgia, serif);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+ 
+.form-description {
+    margin: 0 0 30px;
+    color: #5E6F66;
+    font-size: 14px;
+    line-height: 1.7;
+}
+ 
+/* -------------------------
+   FORM FIELDS
+   ------------------------- */
+ 
+#issueForm {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+ 
+#issueForm .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 9px;
+    min-width: 0;
+    margin: 0;
+}
+ 
+#issueForm label {
+    display: block;
+    margin: 0;
+    color: #142D24;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+ 
+#issueForm input:not([type="file"]),
+#issueForm select,
+#issueForm textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 14px 15px;
+    border: 1.5px solid rgba(20, 45, 36, 0.14);
+    border-radius: 12px;
+    outline: none;
+    background-color: #F6F3EA;
+    color: #1C2A24;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+ 
+#issueForm input:not([type="file"]),
+#issueForm select {
+    min-height: 50px;
+}
+ 
+#issueForm textarea {
+    min-height: 145px;
+    resize: vertical;
+}
+ 
+#issueForm input::placeholder,
+#issueForm textarea::placeholder {
+    color: #8B9A92;
+    opacity: 1;
+}
+ 
+#issueForm input:focus,
+#issueForm select:focus,
+#issueForm textarea:focus {
+    border-color: #315C46;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(49, 92, 70, 0.16);
+}
+ 
+#issueForm select {
+    cursor: pointer;
+}
+ 
+#issueForm .report-help {
+    margin: 0;
+    color: #6E7F76;
+    font-size: 12px;
+    line-height: 1.75;
+}
+ 
+/* -------------------------
+   LOCATION BUTTON
+   ------------------------- */
+ 
+#getLocationBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    gap: 9px;
+    min-height: 45px;
+    padding: 11px 18px;
+    border: 1.5px solid rgba(49, 92, 70, 0.35);
+    border-radius: 999px;
+    background: transparent;
+    color: #315C46;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+ 
+#getLocationBtn:hover {
+    border-color: #D6B779;
+    background: rgba(214, 183, 121, 0.2);
+    color: #142D24;
+    transform: translateY(-1px);
+}
+ 
+.location-message {
+    margin: 0;
+    color: #5E6F66;
+    font-size: 13px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+ 
+.location-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    min-width: 0;
+}
+ 
+.location-fields .form-group {
+    min-width: 0;
+}
+ 
+/* -------------------------
+   PHOTO UPLOAD
+   ------------------------- */
+ 
+#issueForm input[type="file"] {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1.5px dashed rgba(49, 92, 70, 0.45);
+    border-radius: 13px;
+    background: #F6F3EA;
+    color: #5E6F66;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+ 
+#issueForm input[type="file"]:hover {
+    border-color: #D6B779;
+    background: #FAF7EE;
+}
+ 
+#issueForm input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 999px;
+    background: #315C46;
+    color: #F6F3EA;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+ 
+#issueForm input[type="file"]::file-selector-button:hover {
+    background: #142D24;
+}
+ 
+.upload-preview {
+    display: none;
+    margin-top: 5px;
+    padding: 12px;
+    border: 1px solid rgba(20, 45, 36, 0.12);
+    border-radius: 13px;
+    background: #F6F3EA;
+}
+ 
+.upload-preview.is-visible {
+    display: block;
+}
+ 
+.upload-preview p {
+    margin: 0 0 10px;
+}
+ 
+#imagePreview {
+    display: block;
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 9px;
+}
+ 
+/* -------------------------
+   SUBMIT BUTTON
+   ------------------------- */
+ 
+#issueForm .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 54px;
+    margin: 0;
+    padding: 15px 22px;
+    border: 0;
+    border-radius: 999px;
+    background: #315C46;
+    color: #F6F3EA;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(49, 92, 70, 0.30);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+ 
+#issueForm .submit-btn:hover {
+    transform: translateY(-2px);
+    background: #142D24;
+    box-shadow: 0 14px 28px rgba(20, 45, 36, 0.35);
+}
+ 
+#issueForm .submit-btn:active {
+    transform: translateY(0);
+}
+ 
+#issueForm .submit-btn:disabled {
+    cursor: wait;
+    opacity: 0.7;
+    transform: none;
+}
+ 
+/* -------------------------
+   ACCESSIBILITY
+   ------------------------- */
+ 
+#issueForm button:focus-visible {
+    outline: 3px solid #D6B779;
+    outline-offset: 3px;
+}
+ 
+/* -------------------------
+   TABLET
+   ------------------------- */
+ 
+@media (max-width: 1000px) {
+    .report-section {
+        padding: 52px 0 70px;
+    }
+ 
+    .report-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+        max-width: 720px;
+        margin-inline: auto;
+    }
+ 
+    .report-intro {
+        position: static;
+        padding: 0;
+    }
+ 
+    .report-intro h1 {
+        max-width: 650px;
+        font-size: clamp(36px, 6vw, 50px);
+    }
+ 
+    .report-intro > p {
+        max-width: 600px;
+    }
+ 
+    .report-info-card {
+        margin-top: 24px;
+    }
+ 
+    .report-form-card {
+        padding: 32px;
+    }
+}
+ 
+/* -------------------------
+   MOBILE
+   ------------------------- */
+ 
+@media (max-width: 560px) {
+    .report-section {
+        padding: 34px 0 48px;
+    }
+ 
+    .report-section .container {
+        width: calc(100% - 28px);
+    }
+ 
+    .report-layout {
+        gap: 23px;
+    }
+ 
+    .report-intro h1 {
+        margin-bottom: 14px;
+        font-size: 34px;
+        letter-spacing: -0.015em;
+    }
+ 
+    .report-intro > p {
+        font-size: 15px;
+        line-height: 1.75;
+    }
+ 
+    .report-intro .eyebrow {
+        margin-bottom: 14px;
+        font-size: 10px;
+    }
+ 
+    .report-info-card {
+        margin-top: 20px;
+        padding: 21px 21px 21px 25px;
+        border-radius: 16px;
+    }
+ 
+    .report-form-card {
+        padding: 23px 18px;
+        border-radius: 20px;
+    }
+ 
+    .report-form-card h2 {
+        font-size: 24px;
+    }
+ 
+    #issueForm {
+        gap: 19px;
+    }
+ 
+    #issueForm input:not([type="file"]),
+    #issueForm select,
+    #issueForm textarea {
+        font-size: 14px;
+    }
+ 
+    .location-fields {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 19px;
+    }
+ 
+    #getLocationBtn {
+        width: 100%;
+    }
+}
+ 
+/* -------------------------
+   FORM RESPONSE MESSAGES
+   (shown by your JS: .success-message / .error-message)
+   ------------------------- */
+ 
+.form-message {
+    display: none;
+    margin-top: 22px;
+    padding: 22px;
+    border-radius: 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+ 
+.form-message:empty,
+.location-message:empty {
+    display: none;
+}
+ 
+.success-message {
+    display: block;
+    color: #142D24;
+    background: rgba(49, 92, 70, 0.08);
+    border: 1px solid rgba(49, 92, 70, 0.35);
+    animation: successAppear 0.35s ease-out;
+}
+ 
+.success-content {
+    text-align: center;
+}
+ 
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #315C46;
+    color: #D6B779;
+    font-size: 30px;
+    font-weight: 800;
+    box-shadow: 0 0 0 6px rgba(214, 183, 121, 0.28);
+}
+ 
+.success-content h3 {
+    margin: 8px 0 12px;
+    color: #142D24;
+    font-family: var(--cf-font-display, "Fraunces", Georgia, serif);
+    font-size: 24px;
+    font-weight: 600;
+}
+ 
+.success-content p {
+    line-height: 1.7;
+    margin: 8px 0;
+    color: #1C2A24;
+}
+ 
+.success-details {
+    max-width: 420px;
+    margin: 20px auto;
+    padding: 14px 18px;
+    text-align: left;
+    border: 1px solid rgba(20, 45, 36, 0.12);
+    border-radius: 12px;
+    background: #ffffff;
+}
+ 
+.success-details p {
+    margin: 10px 0;
+    overflow-wrap: anywhere;
+}
+ 
+.pending-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(214, 183, 121, 0.3);
+    color: #5C4412;
+    font-weight: 700;
+}
+ 
+.success-footer {
+    color: #5E6F66;
+}
+ 
+.success-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: #315C46;
+    color: #F6F3EA;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background-color 0.2s ease;
+}
+ 
+.success-link:hover {
+    background: #142D24;
+}
+ 
+.error-message {
+    display: block;
+    color: #6E1F18;
+    background: rgba(160, 50, 40, 0.08);
+    border: 1px solid rgba(160, 50, 40, 0.35);
+}
+ 
+#submitReportBtn:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+ 
+@keyframes successAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+ 
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .report-section *,
+    .report-section *::before,
+    .report-section *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+ 

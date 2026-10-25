@@ -1,0 +1,282 @@
+/* ==========================================
+   CIVICFIX — AUTHENTICATION PAGES (premium)
+   Palette: #142D24 Deep · #315C46 Forest · #D6B779 Gold · #F6F3EA Ivory
+   CSS only. Same class names as before: login / register JS keeps working.
+   Needs the :root variables from style.css.
+   ========================================== */
+ 
+.auth-section {
+    position: relative;
+    min-height: 78vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 64px 20px;
+    background:
+        radial-gradient(ellipse at 12% 12%, rgba(214, 183, 121, 0.20), transparent 36%),
+        radial-gradient(ellipse at 90% 88%, rgba(49, 92, 70, 0.55), transparent 45%),
+        #142D24;
+}
+ 
+.auth-section::before {
+    position: absolute;
+    top: 35px;
+    right: 7%;
+    width: 150px;
+    height: 150px;
+    border: 1px solid rgba(214, 183, 121, 0.28);
+    border-radius: 35px;
+    transform: rotate(18deg);
+    content: "";
+    pointer-events: none;
+}
+ 
+.auth-section::after {
+    position: absolute;
+    bottom: 25px;
+    left: 5%;
+    width: 100px;
+    height: 100px;
+    border: 1px solid rgba(214, 183, 121, 0.28);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+}
+ 
+.auth-card {
+    position: relative;
+    z-index: 1;
+    width: min(480px, 100%);
+    padding: clamp(25px, 5vw, 43px);
+    background: #FBF9F3;
+    border: 1px solid rgba(214, 183, 121, 0.45);
+    border-top: 4px solid #D6B779;
+    border-radius: 25px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
+}
+ 
+.auth-header {
+    margin-bottom: 30px;
+    text-align: left;
+}
+ 
+.auth-header .eyebrow {
+    margin-bottom: 13px;
+    color: #315C46;
+}
+ 
+.auth-header h1 {
+    margin: 8px 0 12px;
+    color: #142D24;
+    font-family: var(--cf-font-display, "Fraunces", Georgia, serif);
+    font-size: clamp(1.9rem, 5vw, 2.55rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+ 
+.auth-header p {
+    margin: 0;
+    color: #5E6F66;
+    font-size: 0.96rem;
+    line-height: 1.8;
+}
+ 
+.auth-form .form-group {
+    margin-bottom: 20px;
+}
+ 
+.auth-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #142D24;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+ 
+.auth-form input {
+    display: block;
+    width: 100%;
+    min-height: 51px;
+    padding: 13px 15px;
+    font-family: inherit;
+    color: #1C2A24;
+    background: #F6F3EA;
+    border: 1.5px solid rgba(20, 45, 36, 0.14);
+    border-radius: 12px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+ 
+.auth-form input::placeholder {
+    color: #8B9A92;
+}
+ 
+.auth-form input:hover {
+    border-color: rgba(49, 92, 70, 0.45);
+}
+ 
+.auth-form input:focus {
+    background: #ffffff;
+    border-color: #315C46;
+    box-shadow: 0 0 0 4px rgba(49, 92, 70, 0.16);
+}
+ 
+.auth-form input[aria-invalid="true"] {
+    border-color: #A03228;
+}
+ 
+.auth-form .btn {
+    width: 100%;
+    min-height: 51px;
+    margin-top: 7px;
+    border-radius: 999px;
+    font-size: 0.96rem;
+}
+ 
+.auth-form .btn-primary {
+    color: #F6F3EA;
+    background: #315C46;
+    box-shadow: 0 10px 24px rgba(49, 92, 70, 0.30);
+}
+ 
+.auth-form .btn-primary:hover {
+    background: #142D24;
+    box-shadow: 0 12px 28px rgba(20, 45, 36, 0.35);
+}
+ 
+/* secondary button on the light auth card must be visible */
+.auth-form .btn-secondary,
+.auth-card .btn-secondary {
+    color: #315C46;
+    background: transparent;
+    border: 1.5px solid rgba(49, 92, 70, 0.4);
+}
+ 
+.auth-form .btn-secondary:hover,
+.auth-card .btn-secondary:hover {
+    color: #142D24;
+    border-color: #D6B779;
+    background: rgba(214, 183, 121, 0.2);
+}
+ 
+.auth-footer {
+    margin-top: 25px;
+    color: #5E6F66;
+    font-size: 0.9rem;
+    text-align: center;
+}
+ 
+.auth-footer a {
+    color: #315C46;
+    font-weight: 700;
+    border-bottom: 2px solid #D6B779;
+}
+ 
+.auth-footer a:hover {
+    color: #142D24;
+    border-bottom-color: #142D24;
+}
+ 
+.auth-message {
+    display: none;
+    margin-bottom: 20px;
+    padding: 13px 15px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+ 
+.auth-message.visible {
+    display: block;
+}
+ 
+.auth-message.error {
+    color: #6E1F18;
+    background: rgba(160, 50, 40, 0.08);
+    border-color: rgba(160, 50, 40, 0.35);
+}
+ 
+.auth-message.success {
+    color: #142D24;
+    background: rgba(49, 92, 70, 0.1);
+    border-color: rgba(49, 92, 70, 0.4);
+}
+ 
+.auth-message.info {
+    color: #5C4412;
+    background: rgba(214, 183, 121, 0.25);
+    border-color: rgba(214, 183, 121, 0.7);
+}
+ 
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0;
+    color: #6E7F76;
+    font-size: 0.8rem;
+}
+ 
+.auth-divider::before,
+.auth-divider::after {
+    height: 1px;
+    flex: 1;
+    background: rgba(20, 45, 36, 0.14);
+    content: "";
+}
+ 
+.auth-legal {
+    margin-top: 18px;
+    color: #6E7F76;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    text-align: center;
+}
+ 
+.auth-legal a {
+    color: #315C46;
+    font-weight: 700;
+}
+ 
+.auth-legal a:hover {
+    color: #142D24;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+ 
+@media (max-width: 520px) {
+    .auth-section {
+        min-height: auto;
+        padding: 35px 14px;
+    }
+ 
+    .auth-section::before {
+        top: 10px;
+        right: -45px;
+    }
+ 
+    .auth-section::after {
+        bottom: 5px;
+        left: -35px;
+    }
+ 
+    .auth-card {
+        padding: 27px 20px;
+        border-radius: 20px;
+    }
+ 
+    .auth-header {
+        margin-bottom: 24px;
+    }
+ 
+    .auth-header h1 {
+        font-size: 1.9rem;
+    }
+}
+ 

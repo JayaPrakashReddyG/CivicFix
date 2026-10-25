@@ -1,0 +1,81 @@
+
+{% extends "base.html" %}
+
+{% block title %}All Issues | CivicFix{% endblock %}
+
+{% block content %}
+<section class="page-container">
+    <div class="page-header">
+        <p class="eyebrow">ADMIN PANEL</p>
+        <h1>All Civic Issues</h1>
+        <p>Review reported problems and update their status.</p>
+    </div>
+
+    <form method="GET" action="{{ url_for('admin.all_issues_page') }}"
+          class="filter-form">
+        <label for="status">Filter by status</label>
+
+        <select name="status" id="status">
+            <option value="">All Statuses</option>
+            <option value="Pending"
+                {% if selected_status == 'Pending' %}selected{% endif %}>
+                Pending
+            </option>
+            <option value="In Progress"
+                {% if selected_status == 'In Progress' %}selected{% endif %}>
+                In Progress
+            </option>
+            <option value="Resolved"
+                {% if selected_status == 'Resolved' %}selected{% endif %}>
+                Resolved
+            </option>
+            <option value="Rejected"
+                {% if selected_status == 'Rejected' %}selected{% endif %}>
+                Rejected
+            </option>
+        </select>
+
+        <button class="btn btn-primary" type="submit">Filter</button>
+    </form>
+
+    {% if issues %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Issue</th>
+                    <th>Category</th>
+                    <th>Reporter</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for issue in issues %}
+                <tr>
+                    <td>#{{ issue.id }}</td>
+                    <td>{{ issue.title }}</td>
+                    <td>{{ issue.category }}</td>
+                    <td>{{ issue.reporter_name or 'Citizen' }}</td>
+                    <td>{{ issue.address or 'Not provided' }}</td>
+                    <td>{{ issue.status }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.issue_details_page', issue_id=issue.id) }}">
+                            Manage
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No issues match this filter.</p>
+    {% endif %}
+
+    <a class="btn btn-secondary"
+       href="{{ url_for('admin.dashboard_page') }}">Back to Dashboard</a>
+</section>
+{% endblock %}

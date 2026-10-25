@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | CivicFix{% endblock %}
+
+{% block content %}
+<section class="page-container">
+    <div class="page-header">
+        <p class="eyebrow">ADMIN PANEL</p>
+        <h1>Admin Dashboard</h1>
+        <p>Monitor civic issues and manage community reports.</p>
+    </div>
+
+    <div class="stats-grid">
+        <article class="stat-card">
+            <h3>Total Issues</h3>
+            <p class="stat-number">{{ stats.get('total_issues', 0) }}</p>
+        </article>
+
+        <article class="stat-card">
+            <h3>Pending</h3>
+            <p class="stat-number">{{ stats.get('pending', 0) }}</p>
+        </article>
+
+        <article class="stat-card">
+            <h3>In Progress</h3>
+            <p class="stat-number">{{ stats.get('in_progress', 0) }}</p>
+        </article>
+
+        <article class="stat-card">
+            <h3>Resolved</h3>
+            <p class="stat-number">{{ stats.get('resolved', 0) }}</p>
+        </article>
+    </div>
+
+    <div class="section-heading">
+        <h2>Recent Issues</h2>
+        <a href="{{ url_for('admin.all_issues_page') }}">View All Issues</a>
+    </div>
+
+    {% if issues %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Issue</th>
+                    <th>Category</th>
+                    <th>Reported By</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for issue in issues %}
+                <tr>
+                    <td>{{ issue.title }}</td>
+                    <td>{{ issue.category }}</td>
+                    <td>{{ issue.reporter_name or 'Citizen' }}</td>
+                    <td>{{ issue.status }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.issue_details_page', issue_id=issue.id) }}">
+                            View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-state">No issues have been reported yet.</p>
+    {% endif %}
+
+    <div class="admin-actions">
+        <a class="btn btn-primary"
+           href="{{ url_for('admin.all_issues_page') }}">Manage Issues</a>
+        <a class="btn btn-secondary"
+           href="{{ url_for('admin.manage_users_page') }}">Manage Users</a>
+    </div>
+</section>
+{% endblock %}

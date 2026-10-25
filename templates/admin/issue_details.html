@@ -1,0 +1,339 @@
+
+{% extends "base.html" %}
+
+{% block title %}Issue Details | CivicFix{% endblock %}
+
+{% block head %}
+<style>
+    .issue-details-section {
+        padding: 42px 0 70px;
+        min-height: 65vh;
+    }
+
+    .issue-details-wrap {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .issue-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+        color: #52665a;
+        text-decoration: none;
+        font-weight: 700;
+        transition: color .2s ease;
+    }
+
+    .issue-back-link:hover {
+        color: #78ad39;
+    }
+
+    .issue-details-card {
+        background: #fff;
+        border: 1px solid #e4eae2;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(20, 37, 30, .07);
+    }
+
+    .issue-details-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 30px;
+        background: linear-gradient(135deg, #f3fbe9, #fff 75%);
+        border-bottom: 1px solid #e8eee4;
+    }
+
+    .issue-eyebrow {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: #638b37;
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: 1.6px;
+    }
+
+    .issue-details-header h1 {
+        margin: 0;
+        color: #18251f;
+        font-size: clamp(1.7rem, 4vw, 2.5rem);
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+
+    .issue-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 15px;
+        border-radius: 999px;
+        background: #fff4d8;
+        color: #946200;
+        border: 1px solid #f0dfb1;
+        font-size: .85rem;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .issue-status::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .issue-status.status-resolved {
+        background: #e4f8e9;
+        color: #19743b;
+        border-color: #c5ebce;
+    }
+
+    .issue-status.status-in-progress {
+        background: #e7f1ff;
+        color: #235da8;
+        border-color: #cbdfff;
+    }
+
+    .issue-status.status-rejected {
+        background: #ffebeb;
+        color: #b42323;
+        border-color: #f4cccc;
+    }
+
+    .issue-details-body {
+        padding: 30px;
+    }
+
+    .issue-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+
+    .issue-info-item {
+        min-width: 0;
+        padding: 19px;
+        border: 1px solid #e7ece5;
+        border-radius: 16px;
+        background: #fafcf9;
+    }
+
+    .issue-info-item span {
+        display: block;
+        margin-bottom: 8px;
+        color: #758278;
+        font-size: .82rem;
+        font-weight: 700;
+    }
+
+    .issue-info-item strong {
+        display: block;
+        color: #203128;
+        font-size: .98rem;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .issue-content-block {
+        margin-top: 28px;
+    }
+
+    .issue-content-block h2 {
+        margin: 0 0 13px;
+        color: #203128;
+        font-size: 1.15rem;
+    }
+
+    .issue-description-text,
+    .issue-admin-notes {
+        padding: 20px;
+        border-radius: 15px;
+        background: #f7f9f6;
+        border: 1px solid #e7ece5;
+        color: #526157;
+        line-height: 1.85;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+    }
+
+    .issue-admin-notes {
+        background: #f0f7ff;
+        border-color: #d9e8fa;
+    }
+
+    .issue-photo {
+        display: block;
+        width: 100%;
+        max-height: 520px;
+        object-fit: contain;
+        object-position: left center;
+        border-radius: 16px;
+        background: #f3f5f2;
+        border: 1px solid #e5eae2;
+    }
+
+    .issue-map-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        color: #426f22;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .issue-map-link:hover {
+        text-decoration: underline;
+    }
+
+    .issue-empty-value {
+        color: #8a958d;
+        font-weight: 500;
+    }
+
+    @media (max-width: 640px) {
+        .issue-details-section {
+            padding: 25px 0 45px;
+        }
+
+        .issue-details-header,
+        .issue-details-body {
+            padding: 21px;
+        }
+
+        .issue-info-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .issue-details-header {
+            gap: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="issue-details-section">
+    <div class="container issue-details-wrap">
+
+        <a href="{{ url_for('issues.my_issues_page') }}"
+           class="issue-back-link">
+            <span aria-hidden="true">&larr;</span>
+            Back to My Reports
+        </a>
+
+        <article class="issue-details-card">
+
+            <header class="issue-details-header">
+                <div>
+                    <span class="issue-eyebrow">
+                        CIVICFIX REPORT #{{ issue.id }}
+                    </span>
+
+                    <h1>{{ issue.title }}</h1>
+                </div>
+
+                <span class="issue-status status-{{ issue.status|lower|replace(' ', '-') }}">
+                    {{ issue.status }}
+                </span>
+            </header>
+
+            <div class="issue-details-body">
+
+                <div class="issue-info-grid">
+
+                    <div class="issue-info-item">
+                        <span>Issue Category</span>
+                        <strong>{{ issue.category }}</strong>
+                    </div>
+
+                    <div class="issue-info-item">
+                        <span>Reported On</span>
+                        <strong>{{ issue.created_at or 'Not available' }}</strong>
+                    </div>
+
+                    <div class="issue-info-item">
+                        <span>Last Updated</span>
+                        <strong>{{ issue.updated_at or 'Not available' }}</strong>
+                    </div>
+
+                    <div class="issue-info-item">
+                        <span>Location / Address</span>
+                        <strong>
+                            {% if issue.address %}
+                                {{ issue.address }}
+                            {% else %}
+                                <span class="issue-empty-value">
+                                    Location not provided
+                                </span>
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                </div>
+
+                <section class="issue-content-block">
+                    <h2>Issue Description</h2>
+
+                    <div class="issue-description-text">{{ issue.description or 'No description provided.' }}</div>
+                </section>
+
+                {% if issue.image_path %}
+                <section class="issue-content-block">
+                    <h2>Uploaded Photograph</h2>
+
+                    <img
+                        class="issue-photo"
+                        src="{{ url_for('issues.uploaded_file', filename=issue.image_path) }}"
+                        alt="Photograph attached to issue report #{{ issue.id }}"
+                        loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+
+                    <p style="display:none; color:#a33; margin-top:10px;">
+                        Image could not be loaded. Check the saved image path and uploads folder.
+                    </p>
+                </section>
+                {% endif %}
+
+                {% if issue.admin_notes %}
+                <section class="issue-content-block">
+                    <h2>Administrator Update</h2>
+
+                    <div class="issue-admin-notes">{{ issue.admin_notes }}</div>
+                </section>
+                {% endif %}
+
+                {% if issue.latitude is not none and issue.longitude is not none %}
+                <section class="issue-content-block">
+                    <h2>Reported Coordinates</h2>
+
+                    <div class="issue-description-text">
+                        Latitude: {{ issue.latitude }}
+                        <br>
+                        Longitude: {{ issue.longitude }}
+                    </div>
+
+                    <a
+                        class="issue-map-link"
+                        href="https://www.openstreetmap.org/?mlat={{ issue.latitude }}&amp;mlon={{ issue.longitude }}#map=17/{{ issue.latitude }}/{{ issue.longitude }}"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        View location on map &rarr;
+                    </a>
+                </section>
+                {% endif %}
+
+            </div>
+        </article>
+
+    </div>
+</section>
+{% endblock %}

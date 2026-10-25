@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}CivicFix - Make Your City Better{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+    <div class="container hero-grid">
+
+        <div class="hero-content">
+            <span class="eyebrow">YOUR CITY. YOUR VOICE.</span>
+
+            <h1>
+                See a Problem?
+                <span class="gradient-text">Let's Fix It.</span>
+            </h1>
+
+            <p class="hero-description">
+                Report potholes, garbage, water leaks and broken streetlights.
+                Help your local authorities build a cleaner, safer community.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#report" class="btn btn-primary">
+                    Report an Issue <span aria-hidden="true">→</span>
+                </a>
+
+                <a href="#how-it-works" class="btn btn-secondary">
+                    How It Works
+                </a>
+            </div>
+
+            <div class="hero-note">
+                <span class="status-dot"></span>
+                Every report can make a difference.
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="visual-glow"></div>
+
+            <div class="city-card">
+                <div class="city-card-header">
+                    <div>
+                        <span class="card-label">COMMUNITY ACTION</span>
+                        <h3>Better City, Together</h3>
+                    </div>
+                    <span class="city-icon" aria-hidden="true">⌂</span>
+                </div>
+
+                <div class="city-illustration" aria-hidden="true">
+                    <!-- Skyline drawing (shows if the photo is missing) -->
+                    <div class="sun"></div>
+                    <div class="building building-one"></div>
+                    <div class="building building-two"></div>
+                    <div class="building building-three"></div>
+                    <div class="road"></div>
+                    <div class="tree tree-one"></div>
+                    <div class="tree tree-two"></div>
+
+                    <!-- Photo: save your image as static/images/community.jpg -->
+                    <img src="{{ url_for('static', filename='images/community.jpg') }}"
+                         alt=""
+                         decoding="async"
+                         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
+                         onerror="this.remove()">
+                </div>
+
+                <div class="city-card-footer">
+                    <span class="status-dot"></span>
+                    <span>Change starts in your neighbourhood</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="issues-section section-padding">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">WHAT NEEDS FIXING?</span>
+            <h2>Spot It. <span class="gradient-text">Report It.</span></h2>
+            <p>Help bring attention to the problems affecting your community.</p>
+        </div>
+
+        <div class="issues-grid">
+            <article class="issue-card">
+                <div class="issue-icon icon-blue" aria-hidden="true">
+                    <!-- road -->
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3 5 21M16 3l3 18M12 4v3M12 11v3M12 18v3"/>
+                    </svg>
+                </div>
+                <h3>Road &amp; Potholes</h3>
+                <p>Report damaged roads, potholes and unsafe streets.</p>
+            </article>
+
+            <article class="issue-card">
+                <div class="issue-icon icon-green" aria-hidden="true">
+                    <!-- bin -->
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>
+                    </svg>
+                </div>
+                <h3>Garbage &amp; Waste</h3>
+                <p>Highlight overflowing bins and uncollected waste.</p>
+            </article>
+
+            <article class="issue-card">
+                <div class="issue-icon icon-orange" aria-hidden="true">
+                    <!-- water drop -->
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3s6 6.2 6 10.5A6 6 0 0 1 6 13.5C6 9.2 12 3 12 3Z"/>
+                    </svg>
+                </div>
+                <h3>Water Problems</h3>
+                <p>Report leaking pipes, waterlogging and drainage issues.</p>
+            </article>
+
+            <article class="issue-card">
+                <div class="issue-icon icon-purple" aria-hidden="true">
+                    <!-- light bulb -->
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.8"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/>
+                    </svg>
+                </div>
+                <h3>Streetlights</h3>
+                <p>Identify broken lights and dark public areas.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="how-section section-padding" id="how-it-works">
+    <div class="container">
+        <div class="section-heading">
+            <span class="eyebrow">SIMPLE PROCESS</span>
+            <h2>How CivicFix <span class="gradient-text">Works</span></h2>
+            <p>Three simple steps to help improve your neighbourhood.</p>
+        </div>
+
+        <div class="steps-grid">
+            <article class="step-card">
+                <span class="step-number">01</span>
+                <h3>Spot a Problem</h3>
+                <p>Notice a civic issue in your street or neighbourhood.</p>
+            </article>
+
+            <article class="step-card">
+                <span class="step-number">02</span>
+                <h3>Submit a Report</h3>
+                <p>Describe the issue and provide its location and a photo.</p>
+            </article>
+
+            <article class="step-card">
+                <span class="step-number">03</span>
+                <h3>Track Progress</h3>
+                <p>Check your report status as the issue moves toward resolution.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="report-section section-padding" id="report">
+    <div class="container report-layout">
+
+        <div class="report-intro">
+            <span class="eyebrow">MAKE A DIFFERENCE</span>
+            <h2>Your Community Deserves <span class="gradient-text">Better.</span></h2>
+            <p>
+                Provide the details below to report a civic problem.
+                Accurate information helps the issue get identified.
+            </p>
+
+            <ul class="report-benefits">
+                <li>Describe the problem clearly</li>
+                <li>Attach a supporting photograph</li>
+                <li>Share the location when available</li>
+            </ul>
+        </div>
+
+        <div class="report-form-card">
+            <h3>Report a Civic Issue</h3>
+            <p class="form-description">
+                Fill in the details of the problem.
+            </p>
+
+            <form id="issueForm"
+                  action="{{ url_for('issues.report_issue') }}"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="title">Issue Title</label>
+                    <input type="text"
+                           id="title"
+                           name="title"
+                           placeholder="e.g. Large pothole near the bus stop"
+                           maxlength="150"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Issue Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Road & Potholes">Road & Potholes</option>
+                        <option value="Garbage & Waste">Garbage & Waste</option>
+                        <option value="Water Problems">Water Problems</option>
+                        <option value="Streetlights">Streetlights</option>
+                        <option value="Drainage">Drainage</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description"
+                              name="description"
+                              rows="4"
+                              maxlength="2000"
+                              placeholder="Explain what happened and where..."
+                              required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Location / Address</label>
+                    <input type="text"
+                           id="address"
+                           name="address"
+                           maxlength="300"
+                           placeholder="Street, area or nearby landmark">
+                </div>
+
+                <div class="location-grid location-fields">
+                    <div class="form-group">
+                        <label for="latitude">Latitude (optional)</label>
+                        <input type="number"
+                               id="latitude"
+                               name="latitude"
+                               min="-90"
+                               max="90"
+                               step="any"
+                               placeholder="e.g. 13.6288">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="longitude">Longitude (optional)</label>
+                        <input type="number"
+                               id="longitude"
+                               name="longitude"
+                               min="-180"
+                               max="180"
+                               step="any"
+                               placeholder="e.g. 79.4192">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Upload a Photo (optional, max 5 MB)</label>
+                    <input type="file"
+                           id="image"
+                           name="image"
+                           accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary submit-btn">
+                    Submit Report <span aria-hidden="true">→</span>
+                </button>
+
+                <p class="form-footnote">
+                    Please provide accurate details. Do not upload sensitive
+                    personal information in photographs.
+                </p>
+
+                <div id="formMessage" role="status" aria-live="polite"></div>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

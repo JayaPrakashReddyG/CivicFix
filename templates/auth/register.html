@@ -1,0 +1,215 @@
+
+{% extends "base.html" %}
+
+{% block title %}Create Account | CivicFix{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+
+        <a href="{{ url_for('home') }}" class="auth-brand">
+            <span class="brand-icon">C</span>
+            <span>CivicFix</span>
+        </a>
+
+        <div class="auth-header">
+            <span class="eyebrow">JOIN YOUR COMMUNITY</span>
+            <h1>Create your account</h1>
+            <p class="auth-description">
+                Join CivicFix and help make your neighbourhood better.
+            </p>
+        </div>
+
+        <div id="authMessage"
+             class="auth-message"
+             role="status"
+             aria-live="polite"></div>
+
+        <form id="registerForm" class="auth-form">
+
+            <div class="form-group">
+                <label for="name">Full name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    minlength="2"
+                    maxlength="100"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    maxlength="254"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a strong password"
+                    autocomplete="new-password"
+                    minlength="8"
+                    required>
+                <p class="report-help">
+                    Use at least 8 characters.
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm password</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Enter your password again"
+                    autocomplete="new-password"
+                    minlength="8"
+                    required>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary submit-btn">
+                Create Account <span aria-hidden="true">→</span>
+            </button>
+
+        </form>
+
+        <p class="auth-footer">
+            Already have an account?
+            <a href="{{ url_for('auth.login_page') }}">Login</a>
+        </p>
+
+        <p class="auth-footer">
+            <a href="{{ url_for('home') }}">← Back to Home</a>
+        </p>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(() => {
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("authMessage");
+    const button = form.querySelector('button[type="submit"]');
+
+    function showMessage(text, type) {
+        message.textContent = text;
+        message.className = "auth-message visible " + type;
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!form.reportValidity()) {
+            return;
+        }
+
+        const name = form.elements.name.value.trim();
+        const email = form.elements.email.value.trim();
+        const password = form.elements.password.value;
+        const confirmPassword = form.elements.confirmPassword.value;
+
+        message.className = "auth-message";
+        message.textContent = "";
+
+        if (name.length < 2) {
+            showMessage(
+                "Please enter your full name.",
+                "error"
+            );
+            return;
+        }
+
+        if (password.length < 8) {
+            showMessage(
+                "Password must contain at least 8 characters.",
+                "error"
+            );
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showMessage(
+                "Passwords do not match.",
+                "error"
+            );
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Creating account...";
+
+        try {
+            const response = await fetch(
+                "{{ url_for('auth.register') }}",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password
+                    })
+                }
+            );
+
+            let result;
+
+            try {
+                result = await response.json();
+            } catch {
+                throw new Error(
+                    "Unexpected server response. Please try again."
+                );
+            }
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Registration failed."
+                );
+            }
+
+            showMessage(
+                "Account created successfully! Redirecting to login...",
+                "success"
+            );
+
+            window.location.href =
+                "{{ url_for('auth.login_page') }}";
+
+        } catch (error) {
+            showMessage(
+                error.message || "Unable to connect to the server.",
+                "error"
+            );
+        } finally {
+            button.disabled = false;
+            button.innerHTML =
+                'Create Account <span aria-hidden="true">→</span>';
+        }
+    });
+})();
+</script>
+{% endblock %}
